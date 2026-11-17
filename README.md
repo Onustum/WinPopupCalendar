@@ -1,3 +1,100 @@
+[EN]
+# Dock Calendar
+
+A lightweight, native Windows utility that displays a popup calendar directly under your dock/taskbar button, instead of opening the system notification panel.
+
+![Light and Dark themes](themes.png)
+*(Add a screenshot showing both light and dark modes here)*
+
+![Calendar Views](preview.png)
+*(Add a screenshot showing Month, Year, and Decade views here)*
+
+## 🎯 Problem Solved
+
+When using modern docks like **PowerToys Dock**, clicking on the clock/date widget often opens the Windows Notification Center sidebar. This is inconvenient if you just want to quickly check or select a date.
+
+**Dock Calendar** solves this by showing a clean, native-style calendar popup right under the button you clicked, similar to how system clocks work in some Linux desktop environments.
+
+## ✨ Features
+
+- **Native & Lightweight**: Built with pure Win32 API + GDI+. ~245 KB executable. No .NET Framework, no Visual C++ Runtime required.
+- **Windows 10 & 11 Support**: Fully compatible with both OS versions (x64).
+- **Auto Theme Detection**: Automatically follows system light/dark theme and updates in real-time without restart.
+- **Modern UI**: Rounded corners and shadows on Windows 11, proper DPI scaling, multi-monitor support.
+- **Localized**: Month names, day names, and first day of the week follow your system locale (Russian, English, etc.).
+- **Smart Positioning**: Appears centered under the cursor/button. If there’s no space below, it appears above.
+- **Instant Toggle**: After first launch, the process stays in the system tray for instant open/close on subsequent clicks.
+- **Keyboard Navigation**: Full keyboard support for accessibility and power users.
+
+## 🚀 How to Use with PowerToys Dock (or similar)
+
+1. **Place the executable** in a permanent location, e.g., `C:\Tools\DockCalendar\DockCalendar.exe`.
+   > ⚠️ Do not run directly from Downloads or archive folders.
+2. **Add to Dock**:
+   - Attach `DockCalendar.exe` as an icon in your dock, OR
+   - Create a `.lnk` shortcut to it and attach the shortcut.
+   - The calendar icon is already embedded in the exe.
+3. **Click the button**:
+   - First click: Opens the calendar under the button.
+   - Second click: Closes the calendar.
+   - Click outside or press `Esc`: Closes the calendar.
+4. **Background Process**: After the first launch, the app stays in the system tray for instant response. To fully exit: right-click tray icon → "Exit" or run `DockCalendar.exe /exit`.
+
+## 📅 Calendar Controls
+
+| Action | Result |
+|--------|--------|
+| **Arrows ▲ / ▼** in header | Navigate month/year/decade (depending on view) |
+| **Mouse Wheel** | Same as arrows |
+| **Click "November 2026"** | Switch to Year view |
+| **Click "2026"** | Switch to Decade view |
+| **Click a month** (in Year view) | Return to that month |
+| **Click a year** (in Decade view) | Go to that year |
+| **Click a day** (including gray days from adjacent months) | Select day; gray days switch to that month |
+| **"Today" button** | Return to current month and highlight today |
+
+### Keyboard Shortcuts
+
+- `Esc` — Close window
+- `← → ↑ ↓` — Navigate days (month view) or periods
+- `PgUp / PgDn` — Navigate periods
+- `Home` — Jump to today
+- `Enter` — Go up one level (Month → Year → Decade)
+
+### Visual Indicators
+
+- **Today**: Highlighted with a colored circle
+- **Selected day**: Highlighted with a ring
+- **Weekends & adjacent month days**: Dimmed for clarity
+
+## 🎨 Theme Support
+
+The app automatically follows your Windows theme:
+
+- **Registry Key**: `HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize` → `AppsUseLightTheme`
+- **Live Update**: Listens to `WM_SETTINGCHANGE` (`ImmersiveColorSet`) and repaints instantly.
+- **Light Palette**: Background `#F3F3F3`, Text `#1B1B1B`, Accent `#0078D4`
+- **Dark Palette**: Background `#202020`, Text `#FFFFFF`, Accent `#4CC2FF`
+- **Windows 11 DWM Border**: Also adapts to light/dark mode.
+
+## 🔧 Command-Line Arguments
+
+| Argument | Purpose |
+|----------|---------|
+| `/exit` | Terminate the running instance |
+| `/noautohide` | Disable auto-hide on focus loss (for debugging) |
+| `/at=X,Y` | Show window at specific screen coordinates (for debugging) |
+
+## 🛠️ Build from Source
+
+The pre-built executable is included. To rebuild:
+
+### Windows (MinGW-w64)
+cd src
+build.bat
+
+[RU]
+
 # Dock Calendar — всплывающий календарь у кнопки панели
 
 Небольшое нативное приложение (**Win32 + GDI+**, ~245 КБ, **без .NET и без
