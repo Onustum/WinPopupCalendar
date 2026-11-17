@@ -1,13 +1,13 @@
-[EN]
+**[EN]**
+
 # Dock Calendar
 
 A lightweight, native Windows utility that displays a popup calendar directly under your dock/taskbar button, instead of opening the system notification panel.
 
 ![Light and Dark themes](themes.png)
-*(Add a screenshot showing both light and dark modes here)*
+
 
 ![Calendar Views](preview.png)
-*(Add a screenshot showing Month, Year, and Decade views here)*
 
 ## 🎯 Problem Solved
 
@@ -93,7 +93,7 @@ The pre-built executable is included. To rebuild:
 cd src
 build.bat
 
-[RU]
+**[RU]**
 
 # Dock Calendar — всплывающий календарь у кнопки панели
 
