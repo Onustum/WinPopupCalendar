@@ -1,98 +1,157 @@
 **[EN]**
+---
+# Dock Calendar — a pop-up calendar next to a taskbar button
 
-# Dock Calendar
+A small native application (**Win32 + GDI+**, ~245 KB, **no .NET and no
+Visual C++ Runtime**) that solves the problem of docks like **PowerToys Dock**:
+clicking the clock/date widget opens the system notification panel *on the side*.
+This app instead shows a **calendar right under the button you clicked** — as a
+pop-up window, not a side panel.
 
-A lightweight, native Windows utility that displays a popup calendar directly under your dock/taskbar button, instead of opening the system notification panel.
+Supports **Windows 10 and Windows 11**, x64. **Light and dark themes** in the
+Windows 11 style — selected **automatically following the system** and switched on
+the fly, without a restart. Rounded corners and shadow on Windows 11, correct
+handling of scaling (DPI) and multiple monitors. The language and first day of the
+week are taken from the user's locale (Russian, English, etc.).
 
-![Light and Dark themes](themes.png)
+![Light and dark themes — automatically from the system](themes.png)
 
+![Three calendar views: month, year, decade](preview.png)
 
-![Calendar Views](preview.png)
+---
 
-## 🎯 Problem Solved
+## How to attach it to a dock (PowerToys Dock, etc.)
 
-When using modern docks like **PowerToys Dock**, clicking on the clock/date widget often opens the Windows Notification Center sidebar. This is inconvenient if you just want to quickly check or select a date.
+1. Put `DockCalendar.exe` in a permanent folder, e.g.
+   `C:\Tools\DockCalendar\DockCalendar.exe` (don't run it straight from an archive/downloads).
+2. In the dock, pin this file as an **`.exe`** icon (or create a `.lnk` to
+   it and pin the shortcut). The calendar icon is already "baked" into the exe.
+3. **Click the button** → the calendar appears **next to the cursor, under the dock**
+   (centered on the button). If there isn't enough room below — the window appears above the cursor.
+4. **Click the same button again** → the calendar closes (like the system
+   clock in Windows).
+5. **Click outside the window** or **Esc** → the window hides.
 
-**Dock Calendar** solves this by showing a clean, native-style calendar popup right under the button you clicked, similar to how system clocks work in some Linux desktop environments.
+> After the first launch, the process keeps running in the background (an icon in the system
+> tray), so every subsequent click opens/closes the calendar **instantly**,
+> with no startup delay. To fully close the program: right-click the tray icon →
+> **"Exit"** (or `DockCalendar.exe /exit`).
 
-## ✨ Features
+---
 
-- **Native & Lightweight**: Built with pure Win32 API + GDI+. ~245 KB executable. No .NET Framework, no Visual C++ Runtime required.
-- **Windows 10 & 11 Support**: Fully compatible with both OS versions (x64).
-- **Auto Theme Detection**: Automatically follows system light/dark theme and updates in real-time without restart.
-- **Modern UI**: Rounded corners and shadows on Windows 11, proper DPI scaling, multi-monitor support.
-- **Localized**: Month names, day names, and first day of the week follow your system locale (Russian, English, etc.).
-- **Smart Positioning**: Appears centered under the cursor/button. If there’s no space below, it appears above.
-- **Instant Toggle**: After first launch, the process stays in the system tray for instant open/close on subsequent clicks.
-- **Keyboard Navigation**: Full keyboard support for accessibility and power users.
-
-## 🚀 How to Use with PowerToys Dock (or similar)
-
-1. **Place the executable** in a permanent location, e.g., `C:\Tools\DockCalendar\DockCalendar.exe`.
-   > ⚠️ Do not run directly from Downloads or archive folders.
-2. **Add to Dock**:
-   - Attach `DockCalendar.exe` as an icon in your dock, OR
-   - Create a `.lnk` shortcut to it and attach the shortcut.
-   - The calendar icon is already embedded in the exe.
-3. **Click the button**:
-   - First click: Opens the calendar under the button.
-   - Second click: Closes the calendar.
-   - Click outside or press `Esc`: Closes the calendar.
-4. **Background Process**: After the first launch, the app stays in the system tray for instant response. To fully exit: right-click tray icon → "Exit" or run `DockCalendar.exe /exit`.
-
-## 📅 Calendar Controls
+## Calendar controls
 
 | Action | Result |
-|--------|--------|
-| **Arrows ▲ / ▼** in header | Navigate month/year/decade (depending on view) |
-| **Mouse Wheel** | Same as arrows |
-| **Click "November 2026"** | Switch to Year view |
-| **Click "2026"** | Switch to Decade view |
-| **Click a month** (in Year view) | Return to that month |
-| **Click a year** (in Decade view) | Go to that year |
-| **Click a day** (including gray days from adjacent months) | Select day; gray days switch to that month |
-| **"Today" button** | Return to current month and highlight today |
+|---|---|
+| **▲ / ▼** arrows on the right of the header | page through month / year / decade (depending on the view) |
+| **Mouse wheel** | same — page through periods |
+| Click the **"November 2026"** header | go to the **year** view |
+| Click the **"2026"** header | go to the **decade** view |
+| Click a month in the year view | return to that month |
+| Click a year in the decade view | go to that year |
+| Click a day (including a gray one from the adjacent month) | select the day; an adjacent month — go to it |
+| **"Today"** button | return to the current month and today's day |
 
-### Keyboard Shortcuts
+**Keyboard:** `Esc` — close; `← → ↑ ↓` — select a day (in the month view) or
+page through periods; `PgUp / PgDn` — page through periods; `Home` — today; `Enter` —
+go up one level (month → year → decade).
 
-- `Esc` — Close window
-- `← → ↑ ↓` — Navigate days (month view) or periods
-- `PgUp / PgDn` — Navigate periods
-- `Home` — Jump to today
-- `Enter` — Go up one level (Month → Year → Decade)
+Today's day is highlighted with a colored circle, the selected one — with a ring, weekends and days
+of the adjacent month are dimmed.
 
-### Visual Indicators
+---
 
-- **Today**: Highlighted with a colored circle
-- **Selected day**: Highlighted with a ring
-- **Weekends & adjacent month days**: Dimmed for clarity
+## Theme (light / dark)
 
-## 🎨 Theme Support
+The app **follows the system theme automatically** — nothing to configure:
 
-The app automatically follows your Windows theme:
+- The theme is read from the registry:
+  `HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize` →
+  `AppsUseLightTheme` (`1` = light, `0` = dark). This is the very switch in
+  **Settings → Personalization → Colors → Choose your mode**.
+- When the theme changes, the system broadcasts a `WM_SETTINGCHANGE`
+  (`ImmersiveColorSet`) message — the open window **recolors immediately**, without closing.
+  If the theme changed while the calendar was hidden, it will be applied the next time
+  it is opened.
+- Light palette: background `#F3F3F3`, text `#1B1B1B`, accent `#0078D4` (white text
+  on the "today" circle). Dark: background `#202020`, text `#FFFFFF`, accent `#4CC2FF`.
+  On Windows 11, the DWM frame is also switched to the corresponding mode.
 
-- **Registry Key**: `HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize` → `AppsUseLightTheme`
-- **Live Update**: Listens to `WM_SETTINGCHANGE` (`ImmersiveColorSet`) and repaints instantly.
-- **Light Palette**: Background `#F3F3F3`, Text `#1B1B1B`, Accent `#0078D4`
-- **Dark Palette**: Background `#202020`, Text `#FFFFFF`, Accent `#4CC2FF`
-- **Windows 11 DWM Border**: Also adapts to light/dark mode.
+---
 
-## 🔧 Command-Line Arguments
+## Launch options (optional)
 
-| Argument | Purpose |
-|----------|---------|
-| `/exit` | Terminate the running instance |
-| `/noautohide` | Disable auto-hide on focus loss (for debugging) |
-| `/at=X,Y` | Show window at specific screen coordinates (for debugging) |
+| Option | Purpose |
+|---|---|
+| `/exit` | terminate an already running instance |
+| `/noautohide` | don't hide the window on focus loss (debugging) |
+| `/at=X,Y` | show the window at the specified screen point (debugging) |
 
-## 🛠️ Build from Source
+---
 
-The pre-built executable is included. To rebuild:
+## Building from source
 
-### Windows (MinGW-w64)
+The ready-made exe is already next to this file. If you need to rebuild:
+
+**Windows (MinGW-w64 in `PATH`, e.g. MSYS2 / winlibs):**
+```bat
 cd src
 build.bat
+```
+**Linux (cross-compilation, package `g++-mingw-w64-x86-64`):**
 
+```sh
+cd src
+./build.sh
+```
+The icon (`app.ico`) is already included in src. If desired, it can be regenerated:
+`python3 make_icon.py` (requires Pillow).
+
+## Source files
+`main.cpp` — the whole application (window, GDI+ rendering, navigation, locale, system
+theme, tray, single instance, positioning at the cursor, DPI).
+
+`resource.rc` / `app.manifest` / `app.ico` — icon, version, manifest
+(DPI Per-Monitor V2, level `asInvoker`).
+
+## How it works 
+The window is `WS_POPUP` borderless, always on top (`WS_EX_TOPMOST`), not shown in
+Alt-Tab or on the taskbar (`WS_EX_TOOLWINDOW`). The shadow is provided by DWM.
+
+When shown, it takes the cursor position (`GetCursorPos`) and the monitor under it
+(`MonitorFromPoint`); the window is centered horizontally on the button and placed slightly
+below the cursor, clamped to the screen bounds.
+
+Single instance via a named mutex: a repeated launch finds the first
+window and sends it a "toggle" message (open/close).
+
+Theme — from `AppsUseLightTheme` (registry), live update on `WM_SETTINGCHANGE`
+(`ImmersiveColorSet`); light/dark palettes in `SetPalette()`.
+
+Date arithmetic — via the ordinal day (Howard Hinnant's algorithm), without
+`SYSTEMTIME` overflows; month/day names — from `GetLocaleInfoEx`, the order of
+weekdays aligns itself to the locale.
+
+## If something is wrong
+**The window is not at the button but in a corner of the screen**
+— the dock launched the exe without passing the cursor position; the app relies on the actual cursor position at the
+moment of the click. Make sure you are clicking exactly on the icon (the cursor is over the button).
+
+**Antivirus/SmartScreen complains about the unsigned exe**
+— this is normal for a
+self-built file without a digital signature: "More info" → "Run anyway",
+or add the folder to exclusions.
+
+**You want a different accent / shades —**
+both palettes (light and dark) are defined in
+the `SetPalette()` function in `main.cpp`, rebuild to your liking. To force
+lock a single theme, replace the call `SetPalette(SystemIsLight())` with
+`SetPalette(true)` (light) or `SetPalette(false)` (dark).
+
+
+ ---
+
+ 
 **[RU]**
 
 # Dock Calendar — всплывающий календарь у кнопки панели
